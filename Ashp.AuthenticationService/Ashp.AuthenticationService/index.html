@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>ASHP Administrator</title>
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/style.css">
+  <!--
+  <link rel="stylesheet" href="css/bootstrap-combined.no-icons.min.2.3.2.css" />
+  -->
+  
+  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css">
+  <!--
+  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css">
+  <link rel="stylesheet" href="css/bootstrap.css" />
+  -->
+</head>
+<body>
+
+  <!-- "Templates" = Databound elements... they are all backed by a MODEL -->
+
+  <!-- "application" Template (MAIN) -->
+    <script type="text/x-handlebars" data-template-name="application">
+        <div class="container">
+            <div class="row">
+                <div class="span12">
+                    <div class="navbar navbar-default">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            </button>
+                            <a class="navbar-brand" href="#">ASHP Admin</a>
+                        </div>
+                        <div class="navbar-collapse collapse">
+                            {{#if App.Session.isLoggedIn}}
+                            <ul class="nav navbar-nav">
+                                <li>{{#link-to "users"}}Users{{/link-to}}</li>
+                                <li>{{#link-to "apps"}}Applications{{/link-to}}</li>
+                                <li>{{#link-to "ipranges"}}IP Ranges{{/link-to}}</li>
+                                <li>{{#link-to "referers"}}Referers{{/link-to}}</li>
+                            </ul>
+                            <ul class="nav navbar-nav navbar-right">
+                                <li>{{#link-to "logs"}}Logs{{/link-to}}</li>
+                                <li>{{#link-to "session.destroy"}}Logoff{{/link-to}}</li>
+                            </ul>
+                            {{/if}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{outlet}}
+            <footer class="container"></footer>
+        </div>
+    </script>
+
+  <!-- {{Outlet}} Templates (links) -->
+
+
+  <!-- "index" Template (default) -->
+  <script type="text/x-handlebars" data-template-name="index">
+      <div class="jumbotron">
+        <strong>CLICK ON LINKS ABOVE!</strong>
+      </div>
+  </script>
+    
+  <!-- Session Templates -->
+    <script type="text/x-handlebars" data-template-name="session/new">
+        <form {{action login on="submit"}} class="form-horizontal">
+            <div class="form-group">
+                <label class="col-lg-2 control-label" for="loginOrEmail">Username</label>
+                <div class="col-lg-5">
+                    {{view Ember.TextField valueBinding="loginOrEmail" placeholder="Username" id="loginOrEmail" }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-2 control-label" for="password">Password</label>
+                <div class="col-lg-5">
+                    {{view Ember.TextField valueBinding="password" type="password" placeholder="Password" id="password" }}                    
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-offset-2 col-lg-5">
+                    <button class="btn">Login</button>
+                </div>
+            </div>
+        </form>
+    </script>
+    
+
+  <!-- User Templates -->
+
+    <script type="text/x-handlebars" data-template-name="users">
+        <div class="row">
+            <div class="col-lg-2">
+                <h3>Users</h3>
+            </div>
+            <div class="col-lg-3">
+                {{input type="text" value=searchText placeholder="Search..."}}
+            </div>
+            <div class="col-lg-7">
+                <button {{action 'new'}} class="btn">New</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <table class="table table-hover table-condensed">
+                    <thead>
+                        <tr>
+                            <th><a href="#" {{action "sortBy" "username"}} >Username</a></th>
+                            <th><a href="#" {{action "sortBy" "password"}} >Password</a></th>
+                            <th><a href="#" {{action "sortBy" "fullname"}} >FullName</a></th>
+                        </tr>
+                    </thead>
+                    {{#each user in filteredContent}}
+                    <tr>            
+                        <td>{{#link-to "user" user.username}}{{user.username}}{{/link-to}}</td>
+                        <td>{{user.password}}</td>
+                        <td>{{user.fullname}}</td>            
+                    </tr>
+                    {{/each}}
+                </table> 
+            </div>
+            <div class="col-lg-6">
+                <br />
+                {{outlet}}
+            </div>
+        </div>
+    </script>
+
+  <script type="text/x-handlebars" data-template-name="user">   
+      <div class="form-group">  
+        <div class="row">
+            <div class="col-lg-3">  
+                <label for="username" class="control-label">Username</label> 
+            </div>
+            <div class="col-lg-6">  
+                {{view Ember.TextField valueBinding="username" id="username" placeholder="Username" class="col-xs-1 form-control" required="true"}}
+             </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3">  
+                <label for="username" class="control-label">Password</label> 
+            </div>
+            <div class="col-lg-6">  
+                {{view Ember.TextField valueBinding="password" id="password" placeholder="Password" class="col-xs-1 form-control" required="true"}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3">   
+                <label for="fullname" class="control-label">FullName</label> 
+            </div>
+            <div class="col-lg-6">  
+                {{view Ember.TextField valueBinding="fullname" id="fullname" placeholder="FullName" class="col-xs-1 form-control" required="true"}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6"> 
+            <button {{action 'save' this}} class="btn">Save</button>
+            <button {{action 'delete' this}} class="btn">Delete</button>
+            </div>
+        </div>
+  </script>
+    
+  <script type="text/x-handlebars" data-template-name="user.index">   
+      <div class="form-group">  
+        <div class="row">
+            <div class="col-xs-3">  
+                <label for="username" class="control-label">Username</label> 
+            </div>
+            <div class="col-xs-5">  
+                {{view Ember.TextField valueBinding="username" id="username" placeholder="Username" class="col-xs-1 form-control" required="true"}}
+             </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-3">  
+                <label for="username" class="control-label">Password</label> 
+            </div>
+            <div class="col-xs-5">  
+                {{view Ember.TextField valueBinding="password" id="password" placeholder="Password" class="col-xs-1 form-control" required="true"}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-3">   
+                <label for="fullname" class="control-label">FullName</label> 
+            </div>
+            <div class="col-xs-5">  
+                {{view Ember.TextField valueBinding="fullname" id="fullname" placeholder="FullName" class="col-xs-1 form-control" required="true"}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-8">  
+                <button {{action 'save' this}} class="btn">Save</button>
+                <button {{action 'delete' this}} class="btn">Delete</button>
+            </div>
+        </div>
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="newUser">  
+      <div class="form-group">  
+        <div class="row">
+            <div class="col-xs-3">  
+                <label for="username" class="control-label">Username</label> 
+            </div>
+            <div class="col-xs-5">  
+                {{view Ember.TextField valueBinding="username" id="username" placeholder="Username" class="col-xs-1 form-control" required="true"}}
+             </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-3">  
+                <label for="username" class="control-label">Password</label> 
+            </div>
+            <div class="col-xs-5">  
+                {{view Ember.TextField valueBinding="password" id="password" placeholder="Password" class="col-xs-1 form-control" required="true"}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-3">   
+                <label for="fullname" class="control-label">FullName</label> 
+            </div>
+            <div class="col-xs-5">  
+                {{view Ember.TextField valueBinding="fullname" id="fullname" placeholder="FullName" class="col-xs-1 form-control" required="true"}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-8">   
+                <button {{action 'save' this}} class="btn">Save</button>
+            </div>
+        </div>
+  </script>
+
+    
+
+  <!-- App Templates -->
+
+    <script type="text/x-handlebars" data-template-name="apps">
+        <div class="row">
+            <div class="col-lg-2">
+                <h3>Apps</h3>
+            </div>
+            <div class="col-lg-3">
+                {{input type="text" value=searchText placeholder="Search..."}}
+            </div>
+            <div class="col-lg-7">
+                <button {{action 'new'}} class="btn">New</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <table class="table table-hover table-condensed">
+                    <thead>
+                        <tr>
+                            <th><a href="#" {{action "sortBy" "appcode"}} >AppCode</a></th>
+                            <th><a href="#" {{action "sortBy" "appname"}} >AppName</a></th>
+                            <th>IsOffline</th>
+                        </tr>
+                    </thead>
+                    {{#each app in filteredContent}}
+                    <tr>
+                        <td>{{#link-to "app" app.appcode}}{{app.appcode}}{{/link-to}}</td>
+                        <td>{{app.appname}}</td>
+                        <td>{{#if app.isoffline}}
+                            <span class="offline">True</span>
+                            {{else}}
+                            <span class="online">False</span>
+                            {{/if}}
+                        </td>
+                    </tr>
+                    {{/each}}
+                </table> 
+            </div>
+            <div class="col-lg-6">
+            <br />
+            {{outlet}}
+            </div>
+        </div>
+    </script>    
+
+  <script type="text/x-handlebars" data-template-name="app"> 
+      <div class="form-group">
+        <div class="row">
+            <div class="col-lg-3">  
+            <label class="control-label" for="appcode">AppCode</label> 
+            </div>
+            <div class="col-lg-6">   
+            {{view Ember.TextField valueBinding="appcode" id="appcode" placeholder="AppCode" class="form-control" required="true"}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3">  
+            <label class="control-label" for="appname">AppName</label> 
+            </div>
+            <div class="col-lg-6">   
+            {{view Ember.TextField valueBinding="appname" id="appname" placeholder="AppName" class="form-control" required="true"}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3">  
+            <label class="control-label" for="isoffline">IsOffline</label> 
+            </div>
+            <div class="col-lg-6">  
+             {{view Ember.Checkbox checkedBinding="isoffline" class="toggle"}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6"> 
+            <button {{action 'save' this}} class="btn-default">Save</button>
+            <button {{action 'delete' this}} class="btn-default">Delete</button>
+            </div>
+        </div>
+      </div>
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="app.index">  
+      <div class="form-group">
+        <div class="row">
+            <div class="col-lg-3">  
+            <label class="control-label" for="appcode">AppCode</label> 
+            </div>
+            <div class="col-lg-6">   
+            {{view Ember.TextField valueBinding="appcode" id="appcode" placeholder="AppCode" class="form-control" required="true"}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3">  
+            <label class="control-label" for="appname">AppName</label> 
+            </div>
+            <div class="col-lg-6">   
+            {{view Ember.TextField valueBinding="appname" id="appname" placeholder="AppName" class="form-control" required="true"}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3">  
+            <label class="control-label" for="isoffline">IsOffline</label> 
+            </div>
+            <div class="col-lg-6">  
+             {{view Ember.Checkbox checkedBinding="isoffline" class="toggle"}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">   
+            <button {{action 'save' this}} class="btn-default">Save</button>
+            <button {{action 'delete' this}} class="btn-default">Delete</button>
+            </div>
+        </div>
+      </div>
+  </script>
+    
+  <script type="text/x-handlebars" data-template-name="newApp">  
+      <div class="form-group">
+        <div class="row">
+            <div class="col-lg-3">  
+            <label class="control-label" for="appcode">AppCode</label> 
+            </div>
+            <div class="col-lg-6">   
+            {{view Ember.TextField valueBinding="appcode" id="appcode" placeholder="AppCode" class="form-control" required="true"}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3">  
+            <label class="control-label" for="appname">AppName</label> 
+            </div>
+            <div class="col-lg-6">   
+            {{view Ember.TextField valueBinding="appname" id="appname" placeholder="AppName" class="form-control" required="true"}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3">  
+            <label class="control-label" for="isoffline">IsOffline</label> 
+            </div>
+            <div class="col-lg-6">  
+             {{view Ember.Checkbox checkedBinding="isoffline" class="toggle"}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">   
+            <button {{action 'save' this}} class="btn-default">Save</button>
+            </div>
+        </div>
+      </div>
+  </script>
+
+
+
+  <!-- IP Ranges Templates -->
+
+    <script type="text/x-handlebars" data-template-name="ipranges">
+        <div class="row">
+            <div class="col-lg-2">
+                <h3>IP Ranges</h3>
+            </div>
+            <div class="col-lg-3">
+                {{input type="text" value=searchText placeholder="Search..."}}
+            </div>
+            <div class="col-lg-7">
+                <button {{action 'new'}} class="btn">New</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <table class="table table-hover table-condensed">
+                    <thead>
+                        <tr>
+                            <th><a href="#" {{action "sortBy" "iptype"}} >IP Type</a></th>
+                            <th><a href="#" {{action "sortBy" "ipmin"}} >IP Min</a></th>
+                            <th><a href="#" {{action "sortBy" "ipmax"}} >IP Max</a></th>
+                            <th><a href="#" {{action "sortBy" "user.username"}} >User</a></th>
+                            <th><a href="#" {{action "sortBy" "app.appcode"}} >App</a></th>
+                        </tr>
+                    </thead>
+                    {{#each iprange in filteredContent}}
+                    <tr>
+                        <td>{{#link-to "iprange" iprange.slug}}{{iprange.iptype}}{{/link-to}}</td>
+                        <td>{{#link-to "iprange" iprange.slug}}{{iprange.ipmin}}{{/link-to}}</td>
+                        <td>{{#link-to "iprange" iprange.slug}}{{iprange.ipmax}}{{/link-to}}</td>
+                        <td>{{iprange.user.username}}</td>
+                        <td>{{iprange.app.appcode}}</td>
+                    </tr>
+                    {{/each}}
+                </table> 
+            </div>
+            <div class="col-lg-6">
+            <br />
+            {{outlet}}
+            </div>
+        </div>
+    </script>
+        
+    <script type="text/x-handlebars" data-template-name="iprange"> 
+        <div class="form-group">
+            <div class="row">
+                <div class="col-lg-3">  
+                    <label class="control-label" for="iptype">IP Type</label> 
+                </div>
+                <div class="col-lg-6">  
+                    {{view Ember.Select
+                           contentBinding="iptypes"
+                           optionValuePath="content.id"
+                           optionLabelPath="content.type"                   
+                           valueBinding="iptype"      
+                    }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3">  
+                    <label class="control-label" for="ipmin">IP Min</label> 
+                </div>
+                <div class="col-lg-6">  
+                    {{view Ember.TextField valueBinding="ipmin" id="ipmin" placeholder="IP Min" class="form-control" required="true"}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3">  
+                    <label class="control-label" for="ipmax">IP Max</label> 
+                </div>
+                <div class="col-lg-6">  
+                    {{view Ember.TextField valueBinding="ipmax" id="ipmax" placeholder="IP Max" class="form-control" required="true"}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3">  
+                    <label class="control-label" for="app">Application</label> 
+                </div>
+                <div class="col-lg-6">  
+                    {{view Ember.Select
+                           contentBinding="applications"
+                           optionValuePath="content.id"
+                           optionLabelPath="content.appcode"                   
+                           selectionBinding="app"      
+                    }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3">  
+                    <label class="control-label" for="txtuser">User</label> 
+                </div>
+                <div class="col-lg-6">  
+                    {{view Ember.Select
+                           contentBinding="users"
+                           optionValuePath="content.id"
+                           optionLabelPath="content.username"
+                           selectionBinding="user"
+                    }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">  
+                <button {{action 'save' this}} class="btn">Save</button>
+                <button {{action 'delete' this}} class="btn">Delete</button>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="iprange.index">  
+        <div class="form-group">
+            <div class="row">
+                <div class="col-lg-3">  
+                    <label class="control-label" for="iptype">IP Type</label> 
+                </div>
+                <div class="col-lg-6">  
+                    {{view Ember.Select
+                           contentBinding="iptypes"
+                           optionValuePath="content.id"
+                           optionLabelPath="content.type"                   
+                           valueBinding="iptype"      
+                    }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3">  
+                    <label class="control-label" for="ipmin">IP Min</label> 
+                </div>
+                <div class="col-lg-6">  
+                    {{view Ember.TextField valueBinding="ipmin" id="ipmin" placeholder="IP Min" class="form-control" required="true"}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3">  
+                    <label class="control-label" for="ipmax">IP Max</label> 
+                </div>
+                <div class="col-lg-6">  
+                    {{view Ember.TextField valueBinding="ipmax" id="ipmax" placeholder="IP Max" class="form-control" required="true"}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3">  
+                    <label class="control-label" for="app">Application</label> 
+                </div>
+                <div class="col-lg-6">  
+                    {{view Ember.Select
+                           contentBinding="applications"
+                           optionValuePath="content.id"
+                           optionLabelPath="content.appcode"                   
+                           selectionBinding="app"      
+                    }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3">  
+                    <label class="control-label" for="txtuser">User</label> 
+                </div>
+                <div class="col-lg-6">  
+                    {{view Ember.Select
+                           contentBinding="users"
+                           optionValuePath="content.id"
+                           optionLabelPath="content.username"
+                           selectionBinding="user"
+                    }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">  
+                <button {{action 'save' this}} class="btn">Save</button>
+                <button {{action 'delete' this}} class="btn">Delete</button>
+                </div>
+            </div>
+        </div>
+    </script>
+    
+    <script type="text/x-handlebars" data-template-name="newIprange">  
+        <div class="form-group">
+            <div class="row">
+                <div class="col-lg-3">  
+                    <label class="control-label" for="iptype">IP Type</label> 
+                </div>
+                <div class="col-lg-6">  
+                    {{view Ember.Select
+                           contentBinding="iptypes"
+                           optionValuePath="content.id"
+                           optionLabelPath="content.type"                   
+                           valueBinding="iptype"      
+                    }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3">  
+                    <label class="control-label" for="ipmin">IP Min</label> 
+                </div>
+                <div class="col-lg-6">  
+                    {{view Ember.TextField valueBinding="ipmin" id="ipmin" placeholder="IP Min" class="form-control" required="true"}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3">  
+                    <label class="control-label" for="ipmax">IP Max</label> 
+                </div>
+                <div class="col-lg-6">  
+                    {{view Ember.TextField valueBinding="ipmax" id="ipmax" placeholder="IP Max" class="form-control" required="true"}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3">  
+                    <label class="control-label" for="app">Application</label> 
+                </div>
+                <div class="col-lg-6">  
+                    {{view Ember.Select
+                        prompt = "Select App..."
+                        contentBinding="applications"
+                        optionValuePath="content.id"
+                        optionLabelPath="content.appcode"                   
+                        selectionBinding="app"      
+                    }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3">  
+                    <label class="control-label" for="txtuser">User</label> 
+                </div>
+                <div class="col-lg-6">  
+                    {{view Ember.Select
+                        prompt = "Select User..."
+                        contentBinding="users"
+                        optionValuePath="content.id"
+                        optionLabelPath="content.username"
+                        selectionBinding="user"
+                    }}
+                </div>
+            </div>
+        <div class="row">
+            <div class="col-lg-6">   
+            <button {{action 'save' this}} class="btn-default">Save</button>
+            </div>
+        </div>
+        </div>
+    </script>
+
+    
+  <!-- Referers Templates -->
+
+    <script type="text/x-handlebars" data-template-name="referers">
+        <div class="row">
+            <div class="col-lg-2">
+                <h3>Referers</h3>
+            </div>
+            <div class="col-lg-3">
+                {{input type="text" value=searchText placeholder="Search..."}}
+            </div>
+            <div class="col-lg-7">
+                <button {{action 'new'}} class="btn">New</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <table class="table table-hover table-condensed">
+                    <thead>
+                        <tr>
+                            <th><a href="#" {{action "sortBy" "referer"}} >URL</a></th>
+                            <th><a href="#" {{action "sortBy" "user.username"}} >User</a></th>
+                            <th><a href="#" {{action "sortBy" "app.appcode"}} >App</a></th>
+                        </tr>
+                    </thead>
+                    {{#each referer in filteredContent}}
+                    <tr>
+                        <td>{{#link-to "referer" referer.url}}{{referer.url}}{{/link-to}}</td>
+                        <td>{{referer.user.username}}</td>
+                        <td>{{referer.app.appcode}}</td>
+                    </tr>
+                    {{/each}}
+                </table> 
+            </div>
+            <div class="col-lg-6">
+                <br />
+                {{outlet}}
+            </div>
+        </div>
+    </script>    
+        
+    <script type="text/x-handlebars" data-template-name="referer"> 
+        <div class="form-group">
+            <div class="row">
+                <div class="col-lg-3"> 
+                    <label class="control-label" for="url">URL</label> 
+                </div>
+                <div class="col-lg-6"> 
+                    {{view Ember.TextField valueBinding="url" id="url" placeholder="URL" class="form-control" required="true"}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3"> 
+                    <label class="control-label" for="app">Application</label> 
+                </div>
+                <div class="col-lg-6">  
+                {{view Ember.Select
+                        contentBinding="applications"
+                        optionValuePath="content.id"
+                        optionLabelPath="content.appcode"                   
+                        selectionBinding="app"      
+                }}
+                </div>
+            </div>
+            <div class="row">
+                    <div class="col-lg-3"> 
+                <label class="control-label" for="txtuser">User</label> 
+                </div>
+                    <div class="col-lg-6">  
+                {{view Ember.Select
+                        contentBinding="users"
+                        optionValuePath="content.id"
+                        optionLabelPath="content.username"
+                        selectionBinding="user"
+                }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6"> 
+                    <button {{action 'save' this}} class="btn">Save</button>
+                    <button {{action 'delete' this}} class="btn">Delete</button>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="referer.index">  
+        <div class="form-group">
+            <div class="row">
+                <div class="col-lg-3"> 
+                    <label class="control-label" for="url">URL</label> 
+                </div>
+                <div class="col-lg-6"> 
+                    {{view Ember.TextField valueBinding="url" id="url" placeholder="URL" class="form-control" required="true"}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3"> 
+                    <label class="control-label" for="app">Application</label> 
+                </div>
+                <div class="col-lg-6">  
+                {{view Ember.Select
+                        contentBinding="applications"
+                        optionValuePath="content.id"
+                        optionLabelPath="content.appcode"                   
+                        selectionBinding="app"      
+                }}
+                </div>
+            </div>
+            <div class="row">
+                    <div class="col-lg-3"> 
+                <label class="control-label" for="txtuser">User</label> 
+                </div>
+                    <div class="col-lg-6">  
+                {{view Ember.Select
+                        contentBinding="users"
+                        optionValuePath="content.id"
+                        optionLabelPath="content.username"
+                        selectionBinding="user"
+                }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6"> 
+                    <button {{action 'save' this}} class="btn">Save</button>
+                    <button {{action 'delete' this}} class="btn">Delete</button>
+                </div>
+            </div>
+        </div>
+    </script>
+    
+    <script type="text/x-handlebars" data-template-name="newReferer">  
+        <div class="form-group">
+            <div class="row">
+                <div class="col-lg-3"> 
+                    <label class="control-label" for="url">URL</label> 
+                </div>
+                <div class="col-lg-6"> 
+                    {{view Ember.TextField valueBinding="url" id="url" placeholder="URL" class="form-control" required="true"}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3"> 
+                    <label class="control-label" for="app">Application</label> 
+                </div>
+                <div class="col-lg-6">  
+                {{view Ember.Select
+                        prompt = "Select App..."
+                        contentBinding="applications"
+                        optionValuePath="content.id"
+                        optionLabelPath="content.appcode"                   
+                        selectionBinding="app"      
+                }}
+                </div>
+            </div>
+            <div class="row">
+                    <div class="col-lg-3"> 
+                <label class="control-label" for="txtuser">User</label> 
+                </div>
+                    <div class="col-lg-6">  
+                {{view Ember.Select
+                        prompt = "Select User..."
+                        contentBinding="users"
+                        optionValuePath="content.id"
+                        optionLabelPath="content.username"
+                        selectionBinding="user"
+                }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6"> 
+                    <button {{action 'save' this}} class="btn">Save</button>
+                </div>
+            </div>
+        </div>
+    </script>
+    
+    <script type="text/x-handlebars" data-template-name="logs">
+        <table id="logTable" class="table">
+            <thead>
+                <tr>
+                    <td>IPAddress</td>
+                    <td>Referer</td>
+                    <td>RequestHeader</td>
+                    <td>QueryString</td>
+                    <td>Decoded</td>
+                    <td>Username</td>
+                    <td>Password</td>
+                    <td>AppCode</td>
+                    <td>LoginAttempted</td>
+                    <td>ServerOK</td>
+                    <td>LoginOK</td>
+                    <td>ExpiryDate</td>
+                    <td>AuthState</td>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </script>
+
+
+    <!--
+    <script src="js/libs/jquery-1.9.1.js"></script>
+    <script src="js/libs/handlebars-1.0.0.js"></script>
+    <script src="js/libs/ember-1.0.0.js"></script>
+    -->
+    
+    <!-- jQuery 2.0.3 MIN -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    <!-- jQuery 1.10.2 DEBUG 
+    <script src="js/libs/jquery-1.10.2.js"></script>-->
+    <script src="js/libs/jquery.cookie.js"></script>
+    <!--<script src="js/libs/handlebars.js"></script>
+     CDN-->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.min.js"></script>
+    
+    <!-- CDN DEV 
+    <script src="http://builds.emberjs.com/canary/ember.js"></script>
+    <script src="http://builds.emberjs.com/canary/ember-data.js"></script>
+    -->
+    <!-- LOCAL DEV -->
+    <script src="js/libs/ember.js"></script>
+    <script src="js/libs/ember-data.js"></script>
+    
+
+    <!-- PROD 
+    <script src="http://builds.emberjs.com/canary/ember.min.js"></script>
+    <script src="http://builds.emberjs.com/canary/ember-data.min.js"></script>
+    -->
+    
+    
+    <!--
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.1.0/moment.min.js"></script>
+    -->
+    <script src="js/app.js"></script>
+</body>
+</html>

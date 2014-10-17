@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="9fbd7d7590b94158a3f5d7aae0d5ba71" Name="Diagram1" ZoomLevel="88">
+        <EntityTypeShape EntityType="AshpDbModel.App" Width="1.5" PointX="0.75" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AshpDbModel.ServiceStatu" Width="1.5" PointX="5.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AshpDbModel.Referer" Width="1.5" PointX="6.5" PointY="2.5" />
+        <AssociationConnector Association="AshpDbModel.FK_Referer_App" />
+        <EntityTypeShape EntityType="AshpDbModel.InstUser" Width="1.5" PointX="10.125" PointY="4.5" />
+        <AssociationConnector Association="AshpDbModel.FK_Referer_InstUser" />
+        <EntityTypeShape EntityType="AshpDbModel.IPRange" Width="1.5" PointX="3.75" PointY="3" />
+        <AssociationConnector Association="AshpDbModel.FK_IPRange_App" />
+        <AssociationConnector Association="AshpDbModel.FK_IPRange_InstUser" />
+        <EntityTypeShape EntityType="AshpDbModel.AuthenticationState" Width="1.5" PointX="3.375" PointY="6.875" />
+        <EntityTypeShape EntityType="AshpDbModel.Log" Width="1.5" PointX="0.5" PointY="5.875" />
+        <AssociationConnector Association="AshpDbModel.FK_Log_AuthenticationState" />
+        <EntityTypeShape EntityType="AshpDbModel.Session" Width="1.5" PointX="8.66349954375229" PointY="29.351819022256798" />
+        <EntityTypeShape EntityType="AshpDbModel.SiteUser" Width="1.5" PointX="8.4874474017356754" PointY="5.9134182361482726" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>ASHP Administrator</title>
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/style.css">
+  <!--
+  <link rel="stylesheet" href="css/bootstrap-combined.no-icons.min.2.3.2.css" />
+  -->
+  
+  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+  <!--
+  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css">
+  <link rel="stylesheet" href="css/bootstrap.css" />
+  -->
+</head>
+<body>
+
+  <!-- "Templates" = Databound elements... they are all backed by a MODEL -->
+
+  <!-- "application" Template (MAIN) -->
+  <script type="text/x-handlebars" data-template-name="application">
+    <div class="navbar navbar-default">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">ASHP Admin</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li>{{#link-to "users"}}Users{{/link-to}}</li>
+              <li>{{#link-to "apps"}}Applications{{/link-to}}</li>
+              <li>{{#link-to "ipranges"}}IP Ranges{{/link-to}}</li>
+              <li>{{#link-to "referers"}}Referers{{/link-to}}</li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="javascript:alert('Logged In!')">Login</a></li>
+            </ul>
+        </div>
+      </div>
+
+    {{outlet}}
+
+  </script>
+
+  <!-- {{Outlet}} Templates (links) -->
+
+
+  <!-- "index" Template (default) -->
+  <script type="text/x-handlebars" data-template-name="index">
+      <strong>CLICK ON LINKS ABOVE!</strong>
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="users">
+    <div class="users">
+      <h2>Users</h2>
+        <p>This is where the Users Admin Screen will go</p>
+
+        {{!--
+        <div class="container-fluid">
+          <div class="span3">
+            <table class="table">
+              <thead>
+                <tr>
+                  <td>Username</td>
+                  <td>Password</td>
+                  <td>FullName</td>
+                </tr>
+              </thead>
+              {{#each}}
+                <tr>
+                  <td>{{Username}}</td>
+                  <td>{{Password}}</td>
+                  <td>{{Fullname}}</td>
+                </tr>
+              {{/each}}
+            <table>
+          </div>
+          <div class="span4">
+            {{outlet}}
+          </div>
+        </div>
+        --}}
+    </div>
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="apps">
+    <div class="applications">
+        <h2>Applications</h2>
+        <p>This is where the Applications Admin Screen will go</p>  
+          {{!--       
+            <table class="table">
+                    <tr>
+                        <td>
+                            bla
+                        </td>
+                    </tr>
+                <table>  
+           
+        <div class="container-fluid">
+            <div class="span3">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td>AppCode</td>
+                            <td>AppName</td>
+                            <td>IsOffline</td>
+                        </tr>
+                    </thead>
+                    {{#each}}
+                        <tr>
+                            <td>{{AppCode}}</td>
+                            <td>{{AppName}}</td>
+                            <td>{{IsOffline}}</td>
+                        </tr>
+                    {{/each}}
+                <table>
+            </div>
+        </div>
+        --}}
+    </div>
+        
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="ipranges">
+    <div class="ipranges">
+      <h2>IP Ranges</h2>
+      <p>This is where the IP Ranges Admin Screen will go</p>
+        {{!--
+    <div class="container-fluid">
+      <div class="span3">
+        <table class="table">
+          <thead>
+            <tr>
+              <td>IpType</td>
+              <td>IpMin</td>
+              <td>IpMax</td>
+              <td>App</td>
+              <td>User</td>
+            </tr>
+          </thead>
+          {{#each}}
+            <tr>
+              <td>{{IpType}}</td>
+              <td>{{IpMin}}</td>
+              <td>{{IpMax}}</td>
+              <td>{{IpRangeUID}}</td>
+              <td>{{IpRangeUID}}</td>
+            </tr>
+          {{/each}}
+        <table>
+      </div>
+        --}}
+    </div>
+    </div>
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="referers">
+    <div class="referers">
+      <h2>Referers</h2>
+      <p>This is where the Referers Admin Screen will go</p>
+    </div>
+      {{!--
+    <div class="container-fluid">
+      <div class="span3">
+        <table class="table">
+          <thead>
+            <tr>
+              <td>RefererUrl</td>
+              <td>App</td>
+              <td>User</td>
+            </tr>
+          </thead>
+          {{#each}}
+            <tr>
+              <td>{{RefererUrl}}</td>
+              <td>{{RefererUID}}</td>
+              <td>{{RefererUID}}</td>
+            </tr>
+          {{/each}}
+        <table>
+      </div>
+        --}}
+    </div>
+  </script>
+
+
+
+
+  <script src="js/libs/jquery-1.9.1.js"></script>
+  <script src="js/libs/handlebars-1.0.0.js"></script>
+  <script src="js/libs/ember-1.0.0.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.1.0/moment.min.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

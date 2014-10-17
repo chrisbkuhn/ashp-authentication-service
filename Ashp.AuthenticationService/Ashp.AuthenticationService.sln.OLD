@@ -1,0 +1,50 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ashp.AuthenticationService", "Ashp.AuthenticationService\Ashp.AuthenticationService.csproj", "{B352ABA9-2B19-4B72-8506-DE601A301817}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ashp.AuthenticationService.Web", "Ashp.AuthenticationService.Web\Ashp.AuthenticationService.Web.csproj", "{9C1A436A-13B1-4CEA-A730-055CBFE78031}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ashp.AuthenticationService.WebAdmin", "Ashp.AuthenticationService.WebAdmin\Ashp.AuthenticationService.WebAdmin.csproj", "{CACFF8E7-8A39-4714-92E7-46E24B270ECE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ashp.AuthenticationService.WebAdmin.Tests", "Ashp.AuthenticationService.WebAdmin.Tests\Ashp.AuthenticationService.WebAdmin.Tests.csproj", "{AB1D96F3-5912-4DD2-A866-2366792674DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ashp.AuthService.Harness", "Ashp.AuthService.Harness\Ashp.AuthService.Harness.csproj", "{8A704D7A-A711-43B0-B6A7-E59A7213C67B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B352ABA9-2B19-4B72-8506-DE601A301817} = {B352ABA9-2B19-4B72-8506-DE601A301817}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B352ABA9-2B19-4B72-8506-DE601A301817}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B352ABA9-2B19-4B72-8506-DE601A301817}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B352ABA9-2B19-4B72-8506-DE601A301817}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B352ABA9-2B19-4B72-8506-DE601A301817}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C1A436A-13B1-4CEA-A730-055CBFE78031}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C1A436A-13B1-4CEA-A730-055CBFE78031}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C1A436A-13B1-4CEA-A730-055CBFE78031}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C1A436A-13B1-4CEA-A730-055CBFE78031}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CACFF8E7-8A39-4714-92E7-46E24B270ECE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CACFF8E7-8A39-4714-92E7-46E24B270ECE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CACFF8E7-8A39-4714-92E7-46E24B270ECE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CACFF8E7-8A39-4714-92E7-46E24B270ECE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB1D96F3-5912-4DD2-A866-2366792674DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB1D96F3-5912-4DD2-A866-2366792674DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB1D96F3-5912-4DD2-A866-2366792674DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB1D96F3-5912-4DD2-A866-2366792674DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A704D7A-A711-43B0-B6A7-E59A7213C67B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A704D7A-A711-43B0-B6A7-E59A7213C67B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A704D7A-A711-43B0-B6A7-E59A7213C67B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A704D7A-A711-43B0-B6A7-E59A7213C67B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.Logging.6.0.1304.0\lib\NET45
+	EndGlobalSection
+EndGlobal

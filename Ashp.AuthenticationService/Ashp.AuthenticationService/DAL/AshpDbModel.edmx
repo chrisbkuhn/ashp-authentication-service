@@ -1,0 +1,511 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="AshpDbModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="AshpDbModelStoreContainer">
+          <EntitySet Name="App" EntityType="AshpDbModel.Store.App" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="AuthenticationState" EntityType="AshpDbModel.Store.AuthenticationState" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="InstUser" EntityType="AshpDbModel.Store.InstUser" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="IPRange" EntityType="AshpDbModel.Store.IPRange" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Log" EntityType="AshpDbModel.Store.Log" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Referer" EntityType="AshpDbModel.Store.Referer" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ServiceStatus" EntityType="AshpDbModel.Store.ServiceStatus" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Session" EntityType="AshpDbModel.Store.Session" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="SiteUser" EntityType="AshpDbModel.Store.SiteUser" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_IPRange_App" Association="AshpDbModel.Store.FK_IPRange_App">
+            <End Role="App" EntitySet="App" />
+            <End Role="IPRange" EntitySet="IPRange" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IPRange_InstUser" Association="AshpDbModel.Store.FK_IPRange_InstUser">
+            <End Role="InstUser" EntitySet="InstUser" />
+            <End Role="IPRange" EntitySet="IPRange" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Log_AuthenticationState" Association="AshpDbModel.Store.FK_Log_AuthenticationState">
+            <End Role="AuthenticationState" EntitySet="AuthenticationState" />
+            <End Role="Log" EntitySet="Log" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Referer_App" Association="AshpDbModel.Store.FK_Referer_App">
+            <End Role="App" EntitySet="App" />
+            <End Role="Referer" EntitySet="Referer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Referer_InstUser" Association="AshpDbModel.Store.FK_Referer_InstUser">
+            <End Role="InstUser" EntitySet="InstUser" />
+            <End Role="Referer" EntitySet="Referer" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="App">
+          <Key>
+            <PropertyRef Name="AppUID" />
+          </Key>
+          <Property Name="AppUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="AppCode" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="AppName" Type="varchar" Nullable="false" MaxLength="255" />
+          <Property Name="IsOffline" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AuthenticationState">
+          <Key>
+            <PropertyRef Name="AuthenticationStateCode" />
+          </Key>
+          <Property Name="AuthenticationStateCode" Type="int" Nullable="false" />
+          <Property Name="AuthenticationState" Type="varchar" Nullable="false" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="InstUser">
+          <Key>
+            <PropertyRef Name="UserUID" />
+          </Key>
+          <Property Name="UserUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Username" Type="varchar" Nullable="false" MaxLength="255" />
+          <Property Name="Password" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="FullName" Type="varchar" Nullable="false" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="IPRange">
+          <Key>
+            <PropertyRef Name="IPRangeUID" />
+          </Key>
+          <Property Name="IPRangeUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="AppUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IPType" Type="int" Nullable="false" />
+          <Property Name="IPMin" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="IPMax" Type="varchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Log">
+          <Key>
+            <PropertyRef Name="LogUID" />
+          </Key>
+          <Property Name="LogUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="LogDate" Type="datetime" Nullable="false" />
+          <Property Name="IPAddress" Type="varchar" MaxLength="50" />
+          <Property Name="Referer" Type="varchar" MaxLength="2000" />
+          <Property Name="AuthorizationRequestHeader" Type="varchar" MaxLength="255" />
+          <Property Name="AuthorizationQueryString" Type="varchar" MaxLength="255" />
+          <Property Name="DecodedAuthorizationString" Type="nchar" MaxLength="255" />
+          <Property Name="Username" Type="varchar" MaxLength="255" />
+          <Property Name="Password" Type="varchar" MaxLength="255" />
+          <Property Name="AppCode" Type="varchar" MaxLength="255" />
+          <Property Name="AshpLoginAttempted" Type="bit" Nullable="false" />
+          <Property Name="ServerOK" Type="bit" />
+          <Property Name="LoginOK" Type="bit" />
+          <Property Name="ExpiryDate" Type="datetime" />
+          <Property Name="AuthenticationState" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Referer">
+          <Key>
+            <PropertyRef Name="RefererUID" />
+          </Key>
+          <Property Name="RefererUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="RefererURL" Type="varchar" Nullable="false" MaxLength="2000" />
+          <Property Name="AppUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserUID" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ServiceStatus">
+          <Key>
+            <PropertyRef Name="ServiceName" />
+          </Key>
+          <Property Name="ServiceName" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="MasterIsDisabled" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Session">
+          <Key>
+            <PropertyRef Name="SiteUserSessionUID" />
+          </Key>
+          <Property Name="SiteUserSessionUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="SiteUserUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="SessionStart" Type="datetime" Nullable="false" />
+          <Property Name="SessionLastActivity" Type="datetime" Nullable="false" />
+          <Property Name="Expired" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SiteUser">
+          <Key>
+            <PropertyRef Name="SiteUserUID" />
+          </Key>
+          <Property Name="SiteUserUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Username" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="Password" Type="varchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_IPRange_App">
+          <End Role="App" Type="AshpDbModel.Store.App" Multiplicity="1" />
+          <End Role="IPRange" Type="AshpDbModel.Store.IPRange" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="App">
+              <PropertyRef Name="AppUID" />
+            </Principal>
+            <Dependent Role="IPRange">
+              <PropertyRef Name="AppUID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IPRange_InstUser">
+          <End Role="InstUser" Type="AshpDbModel.Store.InstUser" Multiplicity="1" />
+          <End Role="IPRange" Type="AshpDbModel.Store.IPRange" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InstUser">
+              <PropertyRef Name="UserUID" />
+            </Principal>
+            <Dependent Role="IPRange">
+              <PropertyRef Name="UserUID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Log_AuthenticationState">
+          <End Role="AuthenticationState" Type="AshpDbModel.Store.AuthenticationState" Multiplicity="1" />
+          <End Role="Log" Type="AshpDbModel.Store.Log" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AuthenticationState">
+              <PropertyRef Name="AuthenticationStateCode" />
+            </Principal>
+            <Dependent Role="Log">
+              <PropertyRef Name="AuthenticationState" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Referer_App">
+          <End Role="App" Type="AshpDbModel.Store.App" Multiplicity="1" />
+          <End Role="Referer" Type="AshpDbModel.Store.Referer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="App">
+              <PropertyRef Name="AppUID" />
+            </Principal>
+            <Dependent Role="Referer">
+              <PropertyRef Name="AppUID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Referer_InstUser">
+          <End Role="InstUser" Type="AshpDbModel.Store.InstUser" Multiplicity="1" />
+          <End Role="Referer" Type="AshpDbModel.Store.Referer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InstUser">
+              <PropertyRef Name="UserUID" />
+            </Principal>
+            <Dependent Role="Referer">
+              <PropertyRef Name="UserUID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AshpDbModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="AshpDbEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="Apps" EntityType="AshpDbModel.App" />
+          <EntitySet Name="ServiceStatus" EntityType="AshpDbModel.ServiceStatu" />
+          <EntitySet Name="Referers" EntityType="AshpDbModel.Referer" />
+          <AssociationSet Name="FK_Referer_App" Association="AshpDbModel.FK_Referer_App">
+            <End Role="App" EntitySet="Apps" />
+            <End Role="Referer" EntitySet="Referers" />
+          </AssociationSet>
+          <EntitySet Name="InstUsers" EntityType="AshpDbModel.InstUser" />
+          <AssociationSet Name="FK_Referer_InstUser" Association="AshpDbModel.FK_Referer_InstUser">
+            <End Role="InstUser" EntitySet="InstUsers" />
+            <End Role="Referer" EntitySet="Referers" />
+          </AssociationSet>
+          <EntitySet Name="IPRanges" EntityType="AshpDbModel.IPRange" />
+          <AssociationSet Name="FK_IPRange_App" Association="AshpDbModel.FK_IPRange_App">
+            <End Role="App" EntitySet="Apps" />
+            <End Role="IPRange" EntitySet="IPRanges" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IPRange_InstUser" Association="AshpDbModel.FK_IPRange_InstUser">
+            <End Role="InstUser" EntitySet="InstUsers" />
+            <End Role="IPRange" EntitySet="IPRanges" />
+          </AssociationSet>
+          <EntitySet Name="AuthenticationStates" EntityType="AshpDbModel.AuthenticationState" />
+          <EntitySet Name="Logs" EntityType="AshpDbModel.Log" />
+          <AssociationSet Name="FK_Log_AuthenticationState" Association="AshpDbModel.FK_Log_AuthenticationState">
+            <End Role="AuthenticationState" EntitySet="AuthenticationStates" />
+            <End Role="Log" EntitySet="Logs" />
+          </AssociationSet>
+          <EntitySet Name="Sessions" EntityType="AshpDbModel.Session" />
+          <EntitySet Name="SiteUsers" EntityType="AshpDbModel.SiteUser" />
+        </EntityContainer>
+        <EntityType Name="App">
+          <Key>
+            <PropertyRef Name="AppUID" />
+          </Key>
+          <Property Name="AppUID" Type="Guid" Nullable="false" />
+          <Property Name="AppCode" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="AppName" Type="String" Nullable="false" MaxLength="255" Unicode="false" FixedLength="false" />
+          <Property Name="IsOffline" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Referers" Relationship="AshpDbModel.FK_Referer_App" FromRole="App" ToRole="Referer" />
+          <NavigationProperty Name="IPRanges" Relationship="AshpDbModel.FK_IPRange_App" FromRole="App" ToRole="IPRange" />
+        </EntityType>
+        <EntityType Name="ServiceStatu">
+          <Key>
+            <PropertyRef Name="ServiceName" />
+          </Key>
+          <Property Name="ServiceName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="MasterIsDisabled" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Referer">
+          <Key>
+            <PropertyRef Name="RefererUID" />
+          </Key>
+          <Property Type="Guid" Name="RefererUID" Nullable="false" />
+          <Property Type="String" Name="RefererURL" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Type="Guid" Name="AppUID" Nullable="false" />
+          <Property Type="Guid" Name="UserUID" Nullable="false" />
+          <NavigationProperty Name="App" Relationship="AshpDbModel.FK_Referer_App" FromRole="Referer" ToRole="App" />
+          <NavigationProperty Name="InstUser" Relationship="AshpDbModel.FK_Referer_InstUser" FromRole="Referer" ToRole="InstUser" />
+        </EntityType>
+        <Association Name="FK_Referer_App">
+          <End Type="AshpDbModel.App" Role="App" Multiplicity="1" />
+          <End Type="AshpDbModel.Referer" Role="Referer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="App">
+              <PropertyRef Name="AppUID" />
+            </Principal>
+            <Dependent Role="Referer">
+              <PropertyRef Name="AppUID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="InstUser">
+          <Key>
+            <PropertyRef Name="UserUID" />
+          </Key>
+          <Property Type="Guid" Name="UserUID" Nullable="false" />
+          <Property Type="String" Name="Username" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="FullName" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Referers" Relationship="AshpDbModel.FK_Referer_InstUser" FromRole="InstUser" ToRole="Referer" />
+          <NavigationProperty Name="IPRanges" Relationship="AshpDbModel.FK_IPRange_InstUser" FromRole="InstUser" ToRole="IPRange" />
+        </EntityType>
+        <Association Name="FK_Referer_InstUser">
+          <End Type="AshpDbModel.InstUser" Role="InstUser" Multiplicity="1" />
+          <End Type="AshpDbModel.Referer" Role="Referer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InstUser">
+              <PropertyRef Name="UserUID" />
+            </Principal>
+            <Dependent Role="Referer">
+              <PropertyRef Name="UserUID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="IPRange">
+          <Key>
+            <PropertyRef Name="IPRangeUID" />
+          </Key>
+          <Property Type="Guid" Name="IPRangeUID" Nullable="false" />
+          <Property Type="Guid" Name="UserUID" Nullable="false" />
+          <Property Type="Guid" Name="AppUID" Nullable="false" />
+          <Property Type="Int32" Name="IPType" Nullable="false" />
+          <Property Type="String" Name="IPMin" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="IPMax" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="App" Relationship="AshpDbModel.FK_IPRange_App" FromRole="IPRange" ToRole="App" />
+          <NavigationProperty Name="InstUser" Relationship="AshpDbModel.FK_IPRange_InstUser" FromRole="IPRange" ToRole="InstUser" />
+        </EntityType>
+        <Association Name="FK_IPRange_App">
+          <End Type="AshpDbModel.App" Role="App" Multiplicity="1" />
+          <End Type="AshpDbModel.IPRange" Role="IPRange" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="App">
+              <PropertyRef Name="AppUID" />
+            </Principal>
+            <Dependent Role="IPRange">
+              <PropertyRef Name="AppUID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IPRange_InstUser">
+          <End Type="AshpDbModel.InstUser" Role="InstUser" Multiplicity="1" />
+          <End Type="AshpDbModel.IPRange" Role="IPRange" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InstUser">
+              <PropertyRef Name="UserUID" />
+            </Principal>
+            <Dependent Role="IPRange">
+              <PropertyRef Name="UserUID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="AuthenticationState">
+          <Key>
+            <PropertyRef Name="AuthenticationStateCode" />
+          </Key>
+          <Property Type="Int32" Name="AuthenticationStateCode" Nullable="false" />
+          <Property Type="String" Name="AuthenticationState1" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Logs" Relationship="AshpDbModel.FK_Log_AuthenticationState" FromRole="AuthenticationState" ToRole="Log" />
+        </EntityType>
+        <EntityType Name="Log">
+          <Key>
+            <PropertyRef Name="LogUID" />
+          </Key>
+          <Property Type="Guid" Name="LogUID" Nullable="false" />
+          <Property Type="DateTime" Name="LogDate" Nullable="false" Precision="3" />
+          <Property Type="String" Name="IPAddress" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Referer" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="AuthorizationRequestHeader" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="AuthorizationQueryString" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="DecodedAuthorizationString" MaxLength="255" FixedLength="true" Unicode="true" />
+          <Property Type="String" Name="Username" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Password" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="AppCode" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="Boolean" Name="AshpLoginAttempted" Nullable="false" />
+          <Property Type="Boolean" Name="ServerOK" />
+          <Property Type="Boolean" Name="LoginOK" />
+          <Property Type="DateTime" Name="ExpiryDate" Precision="3" />
+          <Property Type="Int32" Name="AuthenticationState" Nullable="false" />
+          <NavigationProperty Name="AuthenticationState1" Relationship="AshpDbModel.FK_Log_AuthenticationState" FromRole="Log" ToRole="AuthenticationState" />
+        </EntityType>
+        <Association Name="FK_Log_AuthenticationState">
+          <End Type="AshpDbModel.AuthenticationState" Role="AuthenticationState" Multiplicity="1" />
+          <End Type="AshpDbModel.Log" Role="Log" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AuthenticationState">
+              <PropertyRef Name="AuthenticationStateCode" />
+            </Principal>
+            <Dependent Role="Log">
+              <PropertyRef Name="AuthenticationState" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Session">
+          <Key>
+            <PropertyRef Name="SiteUserSessionUID" />
+          </Key>
+          <Property Type="Guid" Name="SiteUserSessionUID" Nullable="false" />
+          <Property Type="Guid" Name="SiteUserUID" Nullable="false" />
+          <Property Type="DateTime" Name="SessionStart" Nullable="false" Precision="3" />
+          <Property Type="DateTime" Name="SessionLastActivity" Nullable="false" Precision="3" />
+          <Property Type="Boolean" Name="Expired" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SiteUser">
+          <Key>
+            <PropertyRef Name="SiteUserUID" />
+          </Key>
+          <Property Type="Guid" Name="SiteUserUID" Nullable="false" />
+          <Property Type="String" Name="Username" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AshpDbModelStoreContainer" CdmEntityContainer="AshpDbEntities">
+          <EntitySetMapping Name="Apps">
+            <EntityTypeMapping TypeName="AshpDbModel.App">
+              <MappingFragment StoreEntitySet="App">
+                <ScalarProperty Name="AppUID" ColumnName="AppUID" />
+                <ScalarProperty Name="AppCode" ColumnName="AppCode" />
+                <ScalarProperty Name="AppName" ColumnName="AppName" />
+                <ScalarProperty Name="IsOffline" ColumnName="IsOffline" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ServiceStatus">
+            <EntityTypeMapping TypeName="AshpDbModel.ServiceStatu">
+              <MappingFragment StoreEntitySet="ServiceStatus">
+                <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
+                <ScalarProperty Name="MasterIsDisabled" ColumnName="MasterIsDisabled" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Referers">
+            <EntityTypeMapping TypeName="AshpDbModel.Referer">
+              <MappingFragment StoreEntitySet="Referer">
+                <ScalarProperty Name="UserUID" ColumnName="UserUID" />
+                <ScalarProperty Name="AppUID" ColumnName="AppUID" />
+                <ScalarProperty Name="RefererURL" ColumnName="RefererURL" />
+                <ScalarProperty Name="RefererUID" ColumnName="RefererUID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InstUsers">
+            <EntityTypeMapping TypeName="AshpDbModel.InstUser">
+              <MappingFragment StoreEntitySet="InstUser">
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="UserUID" ColumnName="UserUID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IPRanges">
+            <EntityTypeMapping TypeName="AshpDbModel.IPRange">
+              <MappingFragment StoreEntitySet="IPRange">
+                <ScalarProperty Name="IPMax" ColumnName="IPMax" />
+                <ScalarProperty Name="IPMin" ColumnName="IPMin" />
+                <ScalarProperty Name="IPType" ColumnName="IPType" />
+                <ScalarProperty Name="AppUID" ColumnName="AppUID" />
+                <ScalarProperty Name="UserUID" ColumnName="UserUID" />
+                <ScalarProperty Name="IPRangeUID" ColumnName="IPRangeUID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AuthenticationStates">
+            <EntityTypeMapping TypeName="AshpDbModel.AuthenticationState">
+              <MappingFragment StoreEntitySet="AuthenticationState">
+                <ScalarProperty Name="AuthenticationState1" ColumnName="AuthenticationState" />
+                <ScalarProperty Name="AuthenticationStateCode" ColumnName="AuthenticationStateCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Logs">
+            <EntityTypeMapping TypeName="AshpDbModel.Log">
+              <MappingFragment StoreEntitySet="Log">
+                <ScalarProperty Name="AuthenticationState" ColumnName="AuthenticationState" />
+                <ScalarProperty Name="ExpiryDate" ColumnName="ExpiryDate" />
+                <ScalarProperty Name="LoginOK" ColumnName="LoginOK" />
+                <ScalarProperty Name="ServerOK" ColumnName="ServerOK" />
+                <ScalarProperty Name="AshpLoginAttempted" ColumnName="AshpLoginAttempted" />
+                <ScalarProperty Name="AppCode" ColumnName="AppCode" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="DecodedAuthorizationString" ColumnName="DecodedAuthorizationString" />
+                <ScalarProperty Name="AuthorizationQueryString" ColumnName="AuthorizationQueryString" />
+                <ScalarProperty Name="AuthorizationRequestHeader" ColumnName="AuthorizationRequestHeader" />
+                <ScalarProperty Name="Referer" ColumnName="Referer" />
+                <ScalarProperty Name="IPAddress" ColumnName="IPAddress" />
+                <ScalarProperty Name="LogDate" ColumnName="LogDate" />
+                <ScalarProperty Name="LogUID" ColumnName="LogUID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sessions">
+            <EntityTypeMapping TypeName="AshpDbModel.Session">
+              <MappingFragment StoreEntitySet="Session">
+                <ScalarProperty Name="Expired" ColumnName="Expired" />
+                <ScalarProperty Name="SessionLastActivity" ColumnName="SessionLastActivity" />
+                <ScalarProperty Name="SessionStart" ColumnName="SessionStart" />
+                <ScalarProperty Name="SiteUserUID" ColumnName="SiteUserUID" />
+                <ScalarProperty Name="SiteUserSessionUID" ColumnName="SiteUserSessionUID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SiteUsers">
+            <EntityTypeMapping TypeName="AshpDbModel.SiteUser">
+              <MappingFragment StoreEntitySet="SiteUser">
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="SiteUserUID" ColumnName="SiteUserUID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
